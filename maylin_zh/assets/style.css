@@ -565,11 +565,7 @@ html.js main figure{opacity:1;animation:none}
 .mv-calm{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease;pointer-events:none;z-index:1}
 #mv-switch:checked~.mv-calm{opacity:1}
 .mv-calm span{position:absolute;display:block;inset:0}
-/* 감싸는 온기 — 9초에 한 번, 알아채기 직전의 속도로 숨 쉰다 */
-.mv-calm .glow{background:radial-gradient(46% 54% at 66% 46%,rgba(255,152,112,.22),rgba(255,120,80,.08) 46%,transparent 72%);
-  animation:mvBreath 9s ease-in-out infinite}
-@keyframes mvBreath{0%,100%{opacity:.72;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
-/* 가장자리를 부드럽게 닫는다 — 방의 조명을 낮춘 느낌 */
+/* 安 은 조명이 낮아지는 것뿐이다. 가장자리를 부드럽게 닫는다 — 움직이는 요소 없음 */
 .mv-calm .edge{background:radial-gradient(76% 86% at 64% 46%,transparent 38%,rgba(16,11,13,.6) 100%)}
 
 /* 히어로 카피는 상단 알약 네비의 안쪽 선(--max + 24px)에 맞춘다 — 큰 글자가 화면 끝에 붙으면 얹혀 보인다 */
@@ -606,7 +602,7 @@ html.js main figure{opacity:1;animation:none}
 .mv-h1 em,.mv-pts li{text-shadow:0 2px 24px rgba(0,0,0,.55)}
 @media (max-width:860px){.mv-sub{bottom:calc(52px + 5%);gap:18px}.mv-pts li:nth-child(n+3){display:none}
   .mv-media::before{background:linear-gradient(2deg,rgba(11,15,26,.96) 10%,rgba(11,15,26,.62) 46%,rgba(11,15,26,.1) 80%,transparent 100%)}}
-@media (prefers-reduced-motion:reduce){.mv-calm .glow{animation:none;opacity:.85}}
+@media (prefers-reduced-motion:reduce){}
 
 
 /* ══════════════════════════════════════════════════════════════════════
