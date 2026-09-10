@@ -555,24 +555,22 @@ html.js main figure{opacity:1;animation:none}
 :root{--ming:'MayMing',"Songti SC","SimSun","Noto Serif CJK SC",serif;
   --grad:linear-gradient(168deg,#ffe3c6 4%,#ffa273 32%,#ff7048 60%,#e0456b 100%)}
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.mv .mv-video{opacity:0;transition:opacity 1s ease-in-out,filter 1.4s ease}
+.mv .mv-video{opacity:0;transition:opacity 1s ease-in-out,filter 1.6s ease}
 .mv .mv-video.show{opacity:1}
-#mv-switch:checked~.mv-media .mv-video{filter:saturate(.18) brightness(.62) contrast(1.28) hue-rotate(-10deg)}
+/* 安 — 훑지 않고 감싼다. 채도를 빼면 꽃에서 생기가 빠져, 지켜준다면서 대상을 죽이는 그림이 된다.
+   색은 거의 살려 두고 조명만 낮춘다. 조준원·스캔선·깊이 눈금은 겨냥하는 기호라 뺐다. */
+#mv-switch:checked~.mv-media .mv-video{filter:saturate(.88) brightness(.7) contrast(1.03)}
 /* 카피가 얹히는 쪽을 눌러 준다(봄온 히어로 스크림). 모바일은 꽃이 화면을 채우므로 아래에서 위로. */
 .mv-media::before{content:"";position:absolute;inset:0;background:linear-gradient(96deg,rgba(11,15,26,.92) 0%,rgba(11,15,26,.64) 42%,rgba(11,15,26,.12) 78%,transparent 100%)}
-.mv-scan{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;pointer-events:none;z-index:1}
-#mv-switch:checked~.mv-scan{opacity:1}
-.mv-scan span{position:absolute;display:block}
-.mv-scan .ln{inset:0;background:repeating-linear-gradient(0deg,rgba(190,225,255,.06) 0 1px,transparent 1px 4px)}
-.mv-scan .vg{inset:0;background:radial-gradient(58% 66% at 68% 46%,transparent 24%,rgba(3,9,20,.78) 100%)}
-.mv-scan .sp{left:0;right:0;height:26%;background:linear-gradient(180deg,transparent,rgba(140,205,255,.09) 58%,rgba(220,240,255,.2) 94%,transparent);animation:mvSweep 4.2s linear infinite}
-@keyframes mvSweep{from{top:-26%}to{top:100%}}
-.mv-scan .rt{left:68%;top:46%;width:clamp(96px,11vw,168px);height:clamp(96px,11vw,168px);transform:translate(-50%,-50%);border:1px solid rgba(255,138,95,.7);border-radius:50%}
-.mv-scan .rt::before,.mv-scan .rt::after{content:"";position:absolute;background:rgba(255,138,95,.7)}
-.mv-scan .rt::before{left:50%;top:-12px;bottom:-12px;width:1px}
-.mv-scan .rt::after{top:50%;left:-12px;right:-12px;height:1px}
-.mv-scan .tk{right:28px;top:26%;bottom:26%;width:10px;border-left:0;border-right:1px solid rgba(190,225,255,.42);border-left:1px solid rgba(190,225,255,.42);
-  background:repeating-linear-gradient(180deg,rgba(190,225,255,.42) 0 1px,transparent 1px 24px)}
+.mv-calm{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease;pointer-events:none;z-index:1}
+#mv-switch:checked~.mv-calm{opacity:1}
+.mv-calm span{position:absolute;display:block;inset:0}
+/* 감싸는 온기 — 9초에 한 번, 알아채기 직전의 속도로 숨 쉰다 */
+.mv-calm .glow{background:radial-gradient(46% 54% at 66% 46%,rgba(255,152,112,.22),rgba(255,120,80,.08) 46%,transparent 72%);
+  animation:mvBreath 9s ease-in-out infinite}
+@keyframes mvBreath{0%,100%{opacity:.72;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+/* 가장자리를 부드럽게 닫는다 — 방의 조명을 낮춘 느낌 */
+.mv-calm .edge{background:radial-gradient(76% 86% at 64% 46%,transparent 38%,rgba(16,11,13,.6) 100%)}
 
 /* 히어로 카피는 상단 알약 네비의 안쪽 선(--max + 24px)에 맞춘다 — 큰 글자가 화면 끝에 붙으면 얹혀 보인다 */
 .mv-sub{top:auto;bottom:9%;gap:28px;width:min(var(--max),calc(100% - 32px));padding:0 24px}
@@ -606,9 +604,9 @@ html.js main figure{opacity:1;animation:none}
 .mv-h1 .st.stB{display:none}
 #mv-switch:checked~.mv-fade .mv-h1 .st.stB{display:block}
 .mv-h1 em,.mv-pts li{text-shadow:0 2px 24px rgba(0,0,0,.55)}
-@media (max-width:860px){.mv-sub{bottom:calc(52px + 5%);gap:18px}.mv-pts li:nth-child(n+3){display:none}.mv-scan .tk{display:none}
+@media (max-width:860px){.mv-sub{bottom:calc(52px + 5%);gap:18px}.mv-pts li:nth-child(n+3){display:none}
   .mv-media::before{background:linear-gradient(2deg,rgba(11,15,26,.96) 10%,rgba(11,15,26,.62) 46%,rgba(11,15,26,.1) 80%,transparent 100%)}}
-@media (prefers-reduced-motion:reduce){.mv-scan .sp{animation:none;opacity:0}}
+@media (prefers-reduced-motion:reduce){.mv-calm .glow{animation:none;opacity:.85}}
 
 
 /* ══════════════════════════════════════════════════════════════════════
