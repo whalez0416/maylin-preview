@@ -413,7 +413,7 @@ if(v('d'))L.push('希望日期：'+v('d'));if(v('t'))L.push('关注项目：'+v(
 L.push('需要中文协助：'+(v('c')?'是':'否'));L.push('（来自官网）');m.value=L.join('\n');}
 f.addEventListener('input',build);f.addEventListener('change',build);build();
 b.addEventListener('click',function(){build();var done=function(){var t=b.textContent;b.textContent='已复制 ✓ 打开微信粘贴即可';setTimeout(function(){b.textContent=t;},2200);};
-var fb=function(){m.removeAttribute('readonly');m.focus();m.select();try{document.execCommand('copy');done();}catch(e){}m.setAttribute('readonly','');};
+var fb=function(){m.removeAttribute('readonly');m.focus();m.select();try{document.execCommand('copy');done();}catch(e){}m.setAttribute('readonly','');m.blur();};
 if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(m.value).then(done,fb);}else{fb();}});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')o.checked=false;});
 o.addEventListener('change',function(){document.documentElement.classList.toggle('wx-lock',o.checked);});
