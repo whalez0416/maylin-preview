@@ -127,8 +127,9 @@ th{font-weight:600;color:var(--ink2);font-size:.85rem;letter-spacing:.06em}
 
 /* wechat / cta */
 .cta-block{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
-.qr{width:180px;height:180px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px}
-.qr img{width:100%;height:100%}
+.qr{width:180px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px}
+.qr img{width:100%;height:auto;display:block}
+.qr-hint{margin:8px 0 0;font-size:.74rem;line-height:1.45;text-align:center;color:var(--ink2)}
 .tel{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:500;text-decoration:none;letter-spacing:.02em}
 @media (max-width:760px){.cta-block{grid-template-columns:1fr}}
 
@@ -299,8 +300,8 @@ footer .legal{margin-top:32px;padding-top:20px;border-top:1px solid var(--line);
 @keyframes hintDrop{0%{transform:translate(-50%,-10px);opacity:0}50%{opacity:1}100%{transform:translate(-50%,14px);opacity:0}}
 /* 봄온 우측 퀵 알약 → 필요한 2개만 */
 .quick{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:9;display:grid;gap:10px;justify-items:end}
-.quick a{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:999px;background:var(--coral);color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;box-shadow:0 10px 30px rgba(255,112,72,.35);transition:transform .3s,background .3s}
-.quick a:hover{transform:translateX(-4px);background:#fff;color:var(--navy)}
+.quick a,.quick .wx-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:999px;background:var(--coral);color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;box-shadow:0 10px 30px rgba(255,112,72,.35);transition:transform .3s,background .3s}
+.quick a:hover,.quick .wx-btn:hover{transform:translateX(-4px);background:#fff;color:var(--navy)}
 .quick a.sec{background:rgba(255,255,255,.92);color:var(--navy);box-shadow:0 10px 30px rgba(0,0,0,.18)}
 /* 다크 히어로 위의 알약 네비는 그대로 흰색(봄온과 동일) */
 @media (max-width:760px){
@@ -308,7 +309,7 @@ footer .legal{margin-top:32px;padding-top:20px;border-top:1px solid var(--line);
   .toggle{width:104px;height:44px}.toggle .knob{width:38px;height:38px}#mv-switch:checked~.mv-fade .toggle .knob{transform:translateX(58px)}
   .mv-sub{bottom:13%;gap:14px;width:calc(100% - 40px)}
   .quick{top:auto;transform:none;right:0;left:0;bottom:0;grid-template-columns:1fr 1fr;gap:0;justify-items:stretch;padding:0;background:rgba(11,15,26,.92);backdrop-filter:blur(10px)}
-  .quick a{border-radius:0;justify-content:center;padding:15px 10px;box-shadow:none}
+  .quick a,.quick .wx-btn{border-radius:0;justify-content:center;padding:15px 10px;box-shadow:none}
   body{padding-bottom:52px}
 }
 @media (prefers-reduced-motion:reduce){.toggle .knob,.mv .scroll-hint,.mv-sub{animation:none}}
@@ -545,6 +546,7 @@ html.js main figure{opacity:1;animation:none}
 @media (prefers-reduced-motion:reduce){
   html.js .active,.titleAni .l,.titleAni .w,.band .frame>picture img,.badge,.orb,.marquee div{animation:none!important}
   html.js .rv,html.js [class*="reveal-"],html.js .chips li,html.js .steps li,html.js .timeline li,html.js .timeline-y li,html.js .proglist a,html.js .offer article,html.js .papers li,html.js .facts li,html.js .three li,html.js .pillars>div,html.js .logo-story>div,html.js .cards .card,html.js .blocks>section,html.js .exp li{opacity:1}
+  html.js .active{opacity:1!important} /* 리빌 대상 목록을 둘로 유지하지 않는다 — JS 가 active 를 붙인 건 전부 보인다 */
   html.js main figure img,html.js .proglist figure img{clip-path:none;transform:none}
   .band picture,.ghost,.orb video{transform:none}
 }
@@ -781,3 +783,34 @@ html.js main figure{opacity:1;animation:none}
 .pp-foot{padding:48px 0 72px;background:#fff}
 .pp-note{margin:0 0 20px;font-size:.86rem;color:var(--ink2)}
 @media (max-width:640px){.pp-open{padding:56px 0 48px}.pp-g{padding:48px 0}.pp-list li{grid-template-columns:1fr}.pp-list .tg{grid-row:auto;justify-self:start}}
+
+/* ══ 微信预约 시트 (퀵바 클릭) — 전송 없음: 입력을 위챗 메시지로 만들어 복사 ═══ */
+.wx-toggle{display:none}
+.quick .wx-btn{cursor:pointer}
+.wx-sheet{position:fixed;inset:0;z-index:40;display:none}
+#wx-open:checked~.wx-sheet{display:block}
+html.wx-lock{overflow:hidden}
+.wx-bg{position:absolute;inset:0;background:rgba(11,15,26,.55);cursor:pointer}
+.wx-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100% - 32px));max-height:calc(100% - 32px);overflow:auto;
+  background:var(--paper);color:var(--ink);border-radius:14px;padding:24px 26px 22px;box-shadow:0 30px 80px rgba(0,0,0,.35);animation:wxIn .3s cubic-bezier(.2,.7,.2,1)}
+.wx-x{position:absolute;right:10px;top:6px;font-size:1.9rem;line-height:1;padding:6px 10px;cursor:pointer;color:var(--ink2)}
+.wx-card .eyebrow{margin:0 0 6px}
+.wx-top{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin:0 0 16px}
+.wx-top .qr{width:150px;flex:none}
+.wx-lead{margin:0;font-size:.95rem;color:var(--ink2);line-height:1.65}
+.wx-form{display:grid;gap:10px}
+.wx-form label{display:grid;gap:4px;font-size:.8rem;color:var(--ink2)}
+.wx-form input,.wx-form select,.wx-form textarea{font:inherit;font-size:16px;color:var(--ink);padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+.wx-form .chk{grid-template-columns:auto 1fr;align-items:center;gap:8px;font-size:.92rem;color:var(--ink)}
+.wx-form .chk input{width:auto;padding:0;accent-color:var(--coral)}
+.wx-msg{background:var(--tint)!important;resize:none;white-space:pre-wrap;line-height:1.5;font-size:.9rem!important}
+.wx-copy{border:0;cursor:pointer;background:var(--coral)!important;border-color:var(--coral)!important;color:#fff!important}
+.wx-form .small{font-size:.78rem;margin:2px 0 0;line-height:1.6}
+.wx-form .small a{color:inherit}
+@keyframes wxIn{from{opacity:0;transform:translate(-50%,-46%)}}
+@keyframes wxUp{from{transform:translateY(40px);opacity:0}}
+@media (max-width:760px){
+  .wx-card{top:auto;bottom:0;left:0;transform:none;width:100%;max-height:88vh;border-radius:16px 16px 0 0;padding:18px 18px 24px;animation:wxUp .35s cubic-bezier(.2,.7,.2,1)}
+  .wx-top{grid-template-columns:1fr;justify-items:center;text-align:center;gap:12px}.wx-top .qr{width:128px;padding:7px}.wx-card{max-height:92vh}
+}
+@media (prefers-reduced-motion:reduce){.wx-card{animation:none}}

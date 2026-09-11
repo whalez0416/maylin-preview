@@ -219,6 +219,7 @@
     </div>
     <div class="qr">
       <img src="assets/img/wechat-qr.png" width="160" height="160" alt="微信预约二维码" loading="lazy">
+      <p class="qr-hint">长按识别二维码<br>添加媄琳医院微信</p>
     </div>
   </div>
 </section>
@@ -226,6 +227,34 @@
 <div class="wrap"><p class="pg-credit">本页内容整理自媄琳官网的项目介绍，并按中国大陆医疗广告规范调整了表述。</p></div>
 
 </main>
+
+<input type="checkbox" id="wx-open" class="wx-toggle">
+<aside class="quick" aria-label="快捷联系">
+  <label for="wx-open" class="wx-btn">微信预约</label>
+  <a class="sec" href="tel:+82-2-783-1231">+82-2-783-1231</a>
+</aside>
+<!-- 微信预约 시트: 정적 사이트라 전송이 없다. 입력 → 메시지 조립 → 복사 → 위챗에 붙여넣기 -->
+<div class="wx-sheet" role="dialog" aria-label="微信预约">
+  <label for="wx-open" class="wx-bg" aria-hidden="true"></label>
+  <div class="wx-card">
+    <label for="wx-open" class="wx-x" aria-label="关闭">×</label>
+    <p class="eyebrow">微信预约</p>
+    <div class="wx-top">
+      <div class="qr"><img src="assets/img/wechat-qr.png" width="160" height="160" alt="微信预约二维码"><p class="qr-hint">长按识别二维码<br>添加媄琳医院微信</p></div>
+      <p class="wx-lead">添加之后，把下面这段发给我们就好。<br>不用想怎么写 — 填一填，复制，粘贴。</p>
+    </div>
+    <form class="wx-form">
+      <label>希望日期<input type="date" name="d"></label>
+      <label>关注项目<select name="t"><option value="">请选择</option><option>全新概念提升</option><option>均衡提升</option><option>一日极致提升</option><option>面部雕塑</option><option>定制双重激光嫩肤</option><option>医疗护肤</option><option>还没想好，想先面诊</option></select></label>
+      <label>怎么称呼您<input type="text" name="n" placeholder="可不填" maxlength="20"></label>
+      <label class="chk"><input type="checkbox" name="c" checked>需要中文协助</label>
+      <textarea class="wx-msg" name="m" rows="6" readonly aria-label="预约信息"></textarea>
+      <button type="button" class="btn primary wx-copy">复制预约信息</button>
+      <p class="muted small">也可直接致电 <a href="tel:+82-2-783-1231">+82-2-783-1231</a> · 周一至周四 10:30–20:00 · 周五至周日 10:30–20:30</p>
+    </form>
+  </div>
+</div>
+
 
 <footer>
   <div class="wrap">
@@ -266,7 +295,7 @@
 var d=document.documentElement;d.classList.add('js');
 var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* 글자 분해 (봄온 header-1 SplitText) */
-[].forEach.call(document.querySelectorAll('[data-split]'),function(h){var i=0;h.innerHTML=h.textContent.split(/(\s+)/).map(function(w){return /\S/.test(w)?'<span class="word">'+w.replace(/\S/g,function(c){return '<span class="letter" style="--i:'+(i++)+'">'+c+'</span>';})+'</span>':w;}).join('');});
+[].forEach.call(document.querySelectorAll('[data-split]'),function(h){var i=0;h.innerHTML=(h.textContent.match(/\s+|[^\s，。？！、]+[，。？！、]*/g)||[]).map(function(w){return /\S/.test(w)?'<span class="word">'+w.replace(/\S/g,function(c){return '<span class="letter" style="--i:'+(i++)+'">'+c+'</span>';})+'</span>':w;}).join('');});
 [].forEach.call(document.querySelectorAll('.lines'),function(b){[].forEach.call(b.querySelectorAll('span'),function(s,i){s.style.setProperty('--i',i);});});
 var sel='.rv,[class*="reveal-"],.chapter .text,.page-head .wrap>*,main figure:not(.focus-track figure),.chips li,.steps li,.timeline li,.timeline-y li,.proglist a,.offer article,.papers li,.facts li,.three li,.pillars>div,.logo-story>div,.cards .card,.blocks>section,.exp li,[data-split],.lines';
 var els=[].slice.call(document.querySelectorAll(sel));
@@ -312,6 +341,21 @@ wheel();
 function next(){if(busy)return;var a=wt.querySelector('.active'),n=a&&a.nextElementSibling;wt.scrollTo({left:n?n.offsetLeft-(innerWidth-n.offsetWidth)/2:0,behavior:'smooth'});}
 timer=setInterval(next,4500);
 wt.addEventListener('pointerdown',function(){busy=1;clearInterval(timer);});}
+})();
+
+/* 微信预约 시트: 입력 → 메시지 조립 → 복사. 전송 없음 */
+(function(){var f=document.querySelector('.wx-form'),o=document.getElementById('wx-open');if(!f||!o)return;
+var m=f.querySelector('.wx-msg'),b=f.querySelector('.wx-copy');
+function build(){var v=function(n){var e=f.elements[n];return e?(e.type==='checkbox'?e.checked:e.value.trim()):'';};
+var L=['您好，我想预约媄琳医院 The Hyundai Seoul店。'];
+if(v('d'))L.push('希望日期：'+v('d'));if(v('t'))L.push('关注项目：'+v('t'));if(v('n'))L.push('称呼：'+v('n'));
+L.push('需要中文协助：'+(v('c')?'是':'否'));L.push('（来自官网）');m.value=L.join('\n');}
+f.addEventListener('input',build);f.addEventListener('change',build);build();
+b.addEventListener('click',function(){build();var done=function(){var t=b.textContent;b.textContent='已复制 ✓ 打开微信粘贴即可';setTimeout(function(){b.textContent=t;},2200);};
+var fb=function(){m.removeAttribute('readonly');m.focus();m.select();try{document.execCommand('copy');done();}catch(e){}m.setAttribute('readonly','');};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(m.value).then(done,fb);}else{fb();}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')o.checked=false;});
+o.addEventListener('change',function(){document.documentElement.classList.toggle('wx-lock',o.checked);});
 })();
 </script>
 </body>
