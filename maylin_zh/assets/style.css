@@ -652,7 +652,7 @@ html.js main figure{opacity:1;animation:none}
 .pg-diag .tx{font-size:12px;fill:rgba(255,255,255,.84)}
 .pg-diag .tx.sm{font-size:10.5px;fill:rgba(255,255,255,.46)}
 .pg-diag .hub{fill:var(--coral)}
-.pg-diag .out{font-family:var(--ming),var(--serif);font-size:15px;font-weight:900;fill:#fff}
+.pg-diag .out{font-size:14px;font-weight:600;fill:#fff}  /* 페이지마다 라벨이 달라 서브셋 밖 글자가 나오므로 고딕 */
 .pg-diag .dl{stroke:rgba(255,178,148,.6);stroke-width:1.2;fill:none;
   stroke-dasharray:var(--L);stroke-dashoffset:var(--L);transition:stroke-dashoffset 1.2s cubic-bezier(.3,.7,.2,1)}
 .pg-diag.active .dl{stroke-dashoffset:0}
