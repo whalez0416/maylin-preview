@@ -1,7 +1,7 @@
 name: uptime maylinseoul.com
 
-# 10분마다 www·api 를 찍는다. 3번 연속 실패면 job 이 실패 → GitHub 가 레포 주인에게 이메일(기본 설정: 실패한 워크플로만 알림).
-# 감시자는 우리 서버 밖(GitHub 러너)에 있어야 서버가 죽어도 알림이 간다.
+# 10분마다 www·api 를 찍는다. 3번 연속 실패면 job 이 실패 → GitHub 가 레포 주인에게 이메일(기본 설정: 실패한 워크플로만 알림)
+# + 슬랙(개인 채널, 시크릿 SLACK_WEBHOOK_MAYLIN). 감시자는 우리 서버 밖(GitHub 러너)에 있어야 서버가 죽어도 알림이 간다.
 on:
   schedule:
     - cron: "*/10 * * * *"
@@ -13,6 +13,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: www + api
+        id: probe
         run: |
           check() {  # url, 기대 문자열
             for i in 1 2 3; do
@@ -20,9 +21,16 @@ jobs:
               if [ "$code" = "200" ] && echo "$body" | grep -q "$2"; then echo "OK  $1"; return 0; fi
               echo "retry $i: $1 -> $code"; sleep 20
             done
-            echo "DOWN $1 (last $code)"; return 1
+            echo "DOWN $1 (last $code)"; echo "down=$1 ($code)" >> "$GITHUB_OUTPUT"; return 1
           }
           fail=0
           check "https://www.maylinseoul.com/" "MAYLIN" || fail=1
           check "https://api.maylinseoul.com/api/health" "code" || fail=1
           exit $fail
+      - name: 슬랙 경보
+        if: failure()
+        env:
+          HOOK: ${{ secrets.SLACK_WEBHOOK_MAYLIN }}
+        run: |
+          [ -z "$HOOK" ] && exit 0
+          curl -s -X POST -H 'Content-Type: application/json' --data "{\"text\":\"🚨 메이린 사이트 응답 없음 — ${{ steps.probe.outputs.down }}\\n3회 재시도 실패(약 1분간). 확인: https://www.maylinseoul.com/ · Coolify 콘솔\"}" "$HOOK"
