@@ -33,4 +33,11 @@ jobs:
           HOOK: ${{ secrets.SLACK_WEBHOOK_MAYLIN }}
         run: |
           [ -z "$HOOK" ] && exit 0
-          curl -s -X POST -H 'Content-Type: application/json' --data "{\"text\":\"🚨 메이린 사이트 응답 없음 — ${{ steps.probe.outputs.down }}\\n3회 재시도 실패(약 1분간). 확인: https://www.maylinseoul.com/ · Coolify 콘솔\"}" "$HOOK"
+          curl -s -X POST -H 'Content-Type: application/json; charset=utf-8' "$HOOK" --data @- <<'JSON'
+          {"text": "메이린 사이트 응답 없음: ${{ steps.probe.outputs.down }}",
+           "blocks": [
+             {"type": "header", "text": {"type": "plain_text", "text": "🚨 메이린 사이트 응답 없음", "emoji": true}},
+             {"type": "section", "text": {"type": "mrkdwn", "text": "*${{ steps.probe.outputs.down }}*\n약 1분간 3회 재시도 모두 실패"}},
+             {"type": "context", "elements": [{"type": "mrkdwn", "text": "<https://www.maylinseoul.com/|사이트 열어보기> · Coolify 콘솔에서 web/api 컨테이너 확인 · 10분 뒤 자동 재검사"}]}
+           ]}
+          JSON
